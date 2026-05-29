@@ -1,0 +1,33 @@
+# DATA FILES — μην ανεβάζουμε raw data
+data/raw/*
+!data/raw/README.md
+data/processed/
+*.csv
+*.parquet
+
+# PYTHON
+__pycache__/
+*.pyc
+venv/
+.venv/
+env/
+
+# DBT
+target/
+dbt_packages/
+logs/
+profiles.yml
+
+# SECRETS — ΠΟΤΕ στο git
+.env
+*.key
+credentials.json
+
+# IDE / EDITOR
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
