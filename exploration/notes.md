@@ -28,3 +28,14 @@
 - Convert empty strings to NULL (e.g. NULLIF)
 - Cast timestamp columns from varchar to timestamp
 - Decide how to handle the 14 anomalies
+
+
+## raw.olist_order_items
+
+### Overview
+- Total rows: 112,650
+- Grain: one row per product within an order (order_id + order_item_id)
+
+### Business relevance
+- seller_id: the bridge between an order and the seller who fulfilled it
+- Critical for the business problem (delivery delays → bad reviews → identify slow sellers)
