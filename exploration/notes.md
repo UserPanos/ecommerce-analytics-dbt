@@ -39,3 +39,25 @@
 ### Business relevance
 - seller_id: the bridge between an order and the seller who fulfilled it
 - Critical for the business problem (delivery delays → bad reviews → identify slow sellers)
+
+## raw.olist_order_reviews
+
+### Overview 
+- Total rows: 99,224
+- Grain: one row per review per order (review_id + order_id)
+
+### Key finding: neither ID is unique on its own
+- order_id is NOT unique (99,224 vs 98,673 distinct) — an order can have multiple reviews
+- review_id is NOT unique (99,224 vs 98,410 distinct) — one review can span multiple orders
+- Only the combination is unique → watch for fan-out when joining on order_id
+
+### Data quality issues
+- Some columns (like 'review_comment_title' and 'review_comment_message') failed during load because their varchar limit was too small, so the type was changed to 'text'
+- CSV had multi-line comments (commas + newlines inside quotes) that broke DBeaver import Wizard parser
+- Loaded via PostgreSQL COPY instead, which handles quoted multi-line fields correctly by design
+- COPY loads empty cells as NULL, whereas the Import Wizard (used for olist_orders) loaded them as empty strings.
+  Proven: review_comment_title IS NULL = 87,656, = '' = 0
+
+### Implications for dbt staging
+- Cast date columns from varchar to timestamp
+- NULL handling differs from orders 
