@@ -61,3 +61,20 @@
 ### Implications for dbt staging
 - Cast date columns from varchar to timestamp
 - NULL handling differs from orders 
+
+## raw.olist_customers
+
+### Overview
+- Total rows: 99,441
+- Grain: one row per customer_id (one per order)
+
+### Key finding: customer_id vs customer_unique_id
+- customer_id is unique (99,441 distinct), it identifies a customer within a single order, not the person
+- customer_unique_id has fewer distinct values (96,096), this is the real person identifier, stable across their orders
+- 99,441 − 96,096 = 3,345 repeat purchases (same person, new order)
+
+### Why it matters
+- To count actual customers, use customer_unique_id (96,096), not 
+  customer_id (which counts orders)
+- customer_id joins 1-to-1 with orders; customer_unique_id groups 
+  orders by person
