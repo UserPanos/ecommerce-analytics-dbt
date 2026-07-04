@@ -5,9 +5,9 @@
 
 ### Overview
 - Total rows: 99,441
-- Grain: one row per customer order, capturing the full order lifecycle 
-  (purchase → approval → carrier handoff → customer delivery vs estimated date)
-- Note: each customer_id appears exactly once (every customer has only one order in this dataset)
+- Grain: one row per order (order_id is unique: 99,441 rows = 99,441 distinct)
+- Order lifecycle: purchase → approval → carrier handoff → customer delivery vs estimated date
+- Note: each customer_id maps to exactly one order (customer_id is a per-order identifier, not a person — see raw.olist_customers)
 
 ### Order statuses (8 total)
 - delivered: 96,478
@@ -35,7 +35,7 @@
 
 ### Overview
 - Total rows: 112,650
-- Grain: one row per product within an order (order_id + order_item_id)
+- Grain: one row per product within an order (order_id + order_item_id is unique: 112,650 rows = 112,650 distinct)
 
 ### Business relevance
 - seller_id: the bridge between an order and the seller who fulfilled it
@@ -115,3 +115,15 @@
 - product_name_lenght + product_description_lenght - Both have typo "lenght" (should be "length"), something that will be renamed in the staging layer
 
 
+## raw.product_category_name_translation
+
+### Overview
+- Total rows: 71 (product_category_name is unique: 71 rows = 71 distinct)
+- Grain: one row per category
+- Two columns: product_category_name (Portuguese, the join key) and 
+  product_category_name_english (the translation)
+
+  ### Business relevance
+- Translates category names PT → EN, making marts readable for 
+  English-speaking stakeholders
+- product_category_name is the join key to olist_products
