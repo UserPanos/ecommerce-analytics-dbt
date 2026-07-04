@@ -85,11 +85,5 @@
 - Total rows: 3,095
 - Grain: one row per seller (seller_id is unique: 3,095 rows = 3,095 distinct)
 
-### Structure
-- Anonymized dataset 
-  No seller name or store name, only seller_id + location
-- Columns: seller_id, seller_zip_code_prefix, seller_city, seller_state
-
 ### Business relevance
-- Provides seller location (city, state) 
-  Needed to describe WHERE the slow sellers are
+- Provides seller location (city, state) - Needed to describe WHERE the slow sellers are
