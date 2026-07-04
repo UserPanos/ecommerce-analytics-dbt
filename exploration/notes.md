@@ -78,3 +78,18 @@
   customer_id (which counts orders)
 - customer_id joins 1-to-1 with orders; customer_unique_id groups 
   orders by person
+
+## raw.olist_sellers
+
+### Overview
+- Total rows: 3,095
+- Grain: one row per seller (seller_id is unique: 3,095 rows = 3,095 distinct)
+
+### Structure
+- Anonymized dataset 
+  No seller name or store name, only seller_id + location
+- Columns: seller_id, seller_zip_code_prefix, seller_city, seller_state
+
+### Business relevance
+- Provides seller location (city, state) 
+  Needed to describe WHERE the slow sellers are
