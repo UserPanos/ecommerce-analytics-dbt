@@ -123,7 +123,16 @@
 - Two columns: product_category_name (Portuguese, the join key) and 
   product_category_name_english (the translation)
 
-  ### Business relevance
+### Business relevance
 - Translates category names PT → EN, making marts readable for 
   English-speaking stakeholders
 - product_category_name is the join key to olist_products
+
+## raw.olist_geolocation 
+
+### Overview
+- Total rows: 1,000,163 - distinct zips (19,015) and 53 points per zip
+
+### Key finding
+- zip_code_prefix is not unique, there is the same fan-out pattern as reviews/payments, but far worse (~53× vs 2-3×)
+- Implication for dbt: aggregate to one point per zip (AVG lat/lng) in an intermediate model, before joining to sellers/customers
