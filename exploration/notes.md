@@ -86,4 +86,19 @@
 - Grain: one row per seller (seller_id is unique: 3,095 rows = 3,095 distinct)
 
 ### Business relevance
-- Provides seller location (city, state) - Needed to describe WHERE the slow sellers are
+- Provides seller location (city, state) - Needed to describe where the slow sellers are
+
+## raw.olist_order_payments
+
+### Overview
+- Total rows: 103,886
+- Grain: one row per payment method per order
+
+### Key finding
+- Order_id is NOT unique (103,886 vs 99,440 distinct) - an order can have multiple payment methods (e.g. voucher + credit card)
+- Same fan-out pattern as reviews — both tables have multiple rows per order_id
+- Only the combination of order_id + payment_sequential is unique → watch for fan-out when joining on order_id
+
+
+
+
