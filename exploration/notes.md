@@ -1,5 +1,6 @@
 # Olist Data Exploration Notes
 
+
 ## raw.olist_orders
 
 ### Overview
@@ -40,6 +41,7 @@
 - seller_id: the bridge between an order and the seller who fulfilled it
 - Critical for the business problem (delivery delays → bad reviews → identify slow sellers)
 
+
 ## raw.olist_order_reviews
 
 ### Overview 
@@ -62,6 +64,7 @@
 - Cast date columns from varchar to timestamp
 - NULL handling differs from orders 
 
+
 ## raw.olist_customers
 
 ### Overview
@@ -79,6 +82,7 @@
 - customer_id joins 1-to-1 with orders; customer_unique_id groups 
   orders by person
 
+
 ## raw.olist_sellers
 
 ### Overview
@@ -87,6 +91,7 @@
 
 ### Business relevance
 - Provides seller location (city, state) - Needed to describe where the slow sellers are
+
 
 ## raw.olist_order_payments
 
@@ -100,5 +105,13 @@
 - Only the combination of order_id + payment_sequential is unique → watch for fan-out when joining on order_id
 
 
+## raw.olist_products
+
+### Overview
+- Total rows: 32,951
+- Grain: one row per product (product_id is unique: 32,951 rows = 32,951 distinct).
+
+### Key finding
+- product_name_lenght + product_description_lenght - Both have typo "lenght" (should be "length"), something that will be renamed in the staging layer
 
 
