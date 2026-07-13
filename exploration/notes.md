@@ -41,6 +41,15 @@
 - seller_id: the bridge between an order and the seller who fulfilled it
 - Critical for the business problem (delivery delays → bad reviews → identify slow sellers)
 
+### Key finding: multi-seller orders
+- 98,666 orders contain at least one order item.
+- 1,278 orders involve more than one seller.
+- Multi-seller orders represent approximately 1.30% of orders represented in `raw.olist_order_items`.
+- The maximum observed number of sellers in one order is 5.
+
+### Modeling implication
+- Order-level delivery and review outcomes cannot be attributed unambiguously to one seller for multi-seller orders.
+
 
 ## raw.olist_order_reviews
 
