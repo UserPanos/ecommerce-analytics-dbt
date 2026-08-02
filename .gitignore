@@ -1,9 +1,7 @@
-# DATA FILES — μην ανεβάζουμε raw data
+# Data files - keep raw data local
 data/raw/*
 !data/raw/README.md
 data/processed/
-*.csv
-*.parquet
 
 # PYTHON
 __pycache__/
@@ -18,7 +16,7 @@ dbt_packages/
 logs/
 profiles.yml
 
-# SECRETS — ΠΟΤΕ στο git
+# Secrets and credentials
 .env
 *.key
 credentials.json
