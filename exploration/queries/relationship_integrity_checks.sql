@@ -1,10 +1,16 @@
 -- Validate referential integrity and key coverage between raw Olist tables.
 -- Child-to-parent checks identify orphan records.
 -- Reverse checks identify parent records with no related child records.
+-- Cardinalities were validated separately through grain and key checks.
 --
 -- Important:
 -- A child record without a parent is a referential-integrity violation.
--- A parent record without a child is a coverage gap, not necessarily an RI violation.
+-- A parent record without a child is a coverage gap, not necessarily
+-- a referential-integrity violation.
+--
+-- Geolocation coverage is validated in geolocation_coverage.sql.
+-- Product-category translation coverage is investigated in
+-- data_quality_anomalies.sql.
 
 
 -- ============================================================
@@ -14,7 +20,7 @@
 -- ============================================================
 
 -- Orders without a matching customer.
--- Expected result: 0
+-- Observed result on the current raw dataset: 0
 select
     count(*) as orders_without_matching_customers
 from raw.olist_orders as o
@@ -24,14 +30,13 @@ where c.customer_id is null;
 
 
 -- Customers without a matching order.
--- Expected result: 0
+-- Observed result on the current raw dataset: 0
 select
     count(*) as customers_without_matching_orders
 from raw.olist_customers as c
 left join raw.olist_orders as o
     on c.customer_id = o.customer_id
 where o.customer_id is null;
-
 
 
 -- ============================================================
@@ -41,7 +46,7 @@ where o.customer_id is null;
 -- ============================================================
 
 -- Order-item rows without a matching order.
--- Expected result: 0
+-- Observed result on the current raw dataset: 0
 select
     count(*) as order_items_without_matching_orders
 from raw.olist_order_items as oi
@@ -51,14 +56,14 @@ where o.order_id is null;
 
 
 -- Orders without matching order items.
--- Expected result: 775
+-- This is a reverse coverage gap, not an RI violation.
+-- Observed result on the current raw dataset: 775
 select
     count(*) as orders_without_order_items
 from raw.olist_orders as o
 left join raw.olist_order_items as oi
     on o.order_id = oi.order_id
 where oi.order_id is null;
-
 
 
 -- ============================================================
@@ -68,7 +73,7 @@ where oi.order_id is null;
 -- ============================================================
 
 -- Order-item rows without a matching seller.
--- Expected result: 0
+-- Observed result on the current raw dataset: 0
 select
     count(*) as order_items_without_matching_sellers
 from raw.olist_order_items as oi
@@ -78,14 +83,13 @@ where s.seller_id is null;
 
 
 -- Sellers without matching order items.
--- Expected result: 0
+-- Observed result on the current raw dataset: 0
 select
     count(*) as sellers_without_order_items
 from raw.olist_sellers as s
 left join raw.olist_order_items as oi
     on s.seller_id = oi.seller_id
 where oi.seller_id is null;
-
 
 
 -- ============================================================
@@ -95,7 +99,7 @@ where oi.seller_id is null;
 -- ============================================================
 
 -- Payment rows without a matching order.
--- Expected result: 0
+-- Observed result on the current raw dataset: 0
 select
     count(*) as payments_without_matching_orders
 from raw.olist_order_payments as p
@@ -105,14 +109,14 @@ where o.order_id is null;
 
 
 -- Orders without a matching payment record.
--- Expected result: 1
+-- This is a reverse coverage gap, not an RI violation.
+-- Observed result on the current raw dataset: 1
 select
     count(*) as orders_without_payments
 from raw.olist_orders as o
 left join raw.olist_order_payments as p
     on o.order_id = p.order_id
 where p.order_id is null;
-
 
 
 -- ============================================================
@@ -122,7 +126,7 @@ where p.order_id is null;
 -- ============================================================
 
 -- Review rows without a matching order.
--- Expected result: 0
+-- Observed result on the current raw dataset: 0
 select
     count(*) as reviews_without_matching_orders
 from raw.olist_order_reviews as r
@@ -132,14 +136,14 @@ where o.order_id is null;
 
 
 -- Orders without a matching review record.
--- Expected result: 768
+-- This is a reverse coverage gap, not an RI violation.
+-- Observed result on the current raw dataset: 768
 select
     count(*) as orders_without_reviews
 from raw.olist_orders as o
 left join raw.olist_order_reviews as r
     on o.order_id = r.order_id
 where r.order_id is null;
-
 
 
 -- ============================================================
@@ -149,7 +153,7 @@ where r.order_id is null;
 -- ============================================================
 
 -- Order-item rows with a null product_id or no matching product.
--- Expected result: 0
+-- Observed result on the current raw dataset: 0
 select
     count(*) as order_items_without_matching_products
 from raw.olist_order_items as oi
@@ -159,7 +163,7 @@ where p.product_id is null;
 
 
 -- Products without matching order items.
--- Expected result: 0
+-- Observed result on the current raw dataset: 0
 select
     count(*) as products_without_order_items
 from raw.olist_products as p

@@ -4,11 +4,11 @@
 
 
 -- ============================================================
--- 1. Delivered order without a payment record
+-- 1. Orders without a payment record
 -- ============================================================
 
 -- Identify orders with no matching payment record.
--- Expected result: 1 order
+-- Observed result on the current raw dataset: 1 order
 with orders_without_payments as (
     select
         o.order_id,
@@ -39,7 +39,7 @@ from orders_without_payments as owp
 left join order_item_summary as ois
     on owp.order_id = ois.order_id;
 
--- Expected finding:
+-- Observed finding:
 -- order_status = delivered
 -- item_row_count = 3
 -- seller_count = 1
@@ -55,8 +55,8 @@ left join order_item_summary as ois
 -- ============================================================
 
 -- Count orders without reviews by order status.
--- Expected total: 768 orders
--- Expected delivered orders without reviews: 646
+-- Observed total on the current raw dataset: 768 orders
+-- Observed delivered orders without reviews: 646
 select
     o.order_status,
     count(*) as orders_without_reviews
@@ -67,7 +67,7 @@ where r.order_id is null
 group by o.order_status
 order by orders_without_reviews desc;
 
--- Expected status breakdown:
+-- Observed status breakdown on the current raw dataset:
 -- delivered   = 646
 -- shipped     = 75
 -- canceled    = 20
@@ -95,7 +95,7 @@ order by review_row_count desc, order_id;
 -- ============================================================
 
 -- Products with a null or blank category assignment.
--- Expected result: 610
+-- Observed result on the current raw dataset: 610
 select
     count(*) as products_without_valid_category
 from raw.olist_products
@@ -107,7 +107,7 @@ where nullif(trim(product_category_name), '') is null;
 -- ============================================================
 
 -- Count products using non-empty categories that have no translation.
--- Expected:
+-- Observed results on the current raw dataset:
 -- products_without_translation = 13
 -- missing_category_values = 2
 select
@@ -135,7 +135,7 @@ order by affected_products desc;
 
 
 -- Translation categories that are not used by any product.
--- Expected result: 0
+-- Observed result on the current raw dataset: 0
 select
     count(*) as unused_translation_categories
 from raw.product_category_name_translation as t

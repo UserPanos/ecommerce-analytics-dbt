@@ -10,12 +10,18 @@
 select
     count(*) as geolocation_rows,
     count(distinct geolocation_zip_code_prefix)
-        as distinct_geolocation_zip_prefixes
+        as distinct_geolocation_zip_prefixes,
+    round(
+        count(*)::numeric
+        / nullif(count(distinct geolocation_zip_code_prefix), 0),
+        1
+    ) as average_rows_per_zip_prefix
 from raw.olist_geolocation;
 
--- Expected:
+-- Observed results on the current raw dataset:
 -- geolocation_rows = 1,000,163
 -- distinct_geolocation_zip_prefixes = 19,015
+-- average_rows_per_zip_prefix = 52.6
 
 
 
@@ -24,7 +30,7 @@ from raw.olist_geolocation;
 -- ============================================================
 
 -- Customers with a null zip prefix.
--- Expected result: 0
+-- Observed result on the current raw dataset: 0
 select
     count(*) as customers_with_null_zip_prefix
 from raw.olist_customers
@@ -33,7 +39,7 @@ where customer_zip_code_prefix is null;
 
 -- Customer rows and distinct customer zip prefixes
 -- without a matching geolocation zip prefix.
--- Expected:
+-- Observed results on the current raw dataset:
 -- customer_rows_without_geolocation_match = 278
 -- missing_customer_zip_prefixes = 157
 with geolocation_zip_codes as (
@@ -58,7 +64,7 @@ where g.geolocation_zip_code_prefix is null;
 -- ============================================================
 
 -- Sellers with a null zip prefix.
--- Expected result: 0
+-- Observed result on the current raw dataset: 0
 select
     count(*) as sellers_with_null_zip_prefix
 from raw.olist_sellers
@@ -67,7 +73,7 @@ where seller_zip_code_prefix is null;
 
 -- Seller rows and distinct seller zip prefixes
 -- without a matching geolocation zip prefix.
--- Expected:
+-- Observed results on the current raw dataset:
 -- seller_rows_without_geolocation_match = 7
 -- missing_seller_zip_prefixes = 7
 with geolocation_zip_codes as (
@@ -87,7 +93,7 @@ where g.geolocation_zip_code_prefix is null;
 
 
 -- Geolocation zip prefixes not used by any seller.
--- Expected result: 16,776
+-- Observed result on the current raw dataset: 16,776
 with geolocation_zip_codes as (
     select distinct
         geolocation_zip_code_prefix
