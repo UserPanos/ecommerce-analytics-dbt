@@ -1,0 +1,117 @@
+sources:
+  - name: olist
+    schema: raw
+    tables:
+      - name: orders
+        identifier: olist_orders
+        description: One row per order.
+        columns:
+          - name: order_id
+            description: Unique identifier per order.
+            data_tests:
+              - unique
+              - not_null
+
+
+      - name: customers
+        identifier: olist_customers
+        columns:
+          - name: customer_id
+            data_tests:
+              - unique
+              - not_null
+          - name: customer_unique_id
+            data_tests:
+              - not_null
+
+
+      - name: geolocation
+        identifier: olist_geolocation
+        columns:
+          - name: geolocation_zip_code_prefix
+            data_tests:
+              - not_null
+
+
+      - name: order_items
+        identifier: olist_order_items
+        data_tests:
+          - unique_combination_of_columns:
+              arguments:
+                columns:
+                  - order_id
+                  - order_item_id
+
+        columns:
+          - name: order_id
+            data_tests:
+              - not_null
+
+          - name: order_item_id
+            data_tests:
+              - not_null
+
+
+      - name: order_payments
+        identifier: olist_order_payments
+        data_tests:
+          - unique_combination_of_columns:
+              arguments:
+                columns:
+                  - order_id
+                  - payment_sequential
+
+        columns:
+          - name: order_id
+            data_tests:
+              - not_null
+
+          - name: payment_sequential
+            data_tests:
+              - not_null
+
+
+      - name: order_reviews
+        identifier: olist_order_reviews
+        data_tests:
+          - unique_combination_of_columns:
+              arguments:
+                columns:
+                  - order_id
+                  - review_id
+
+        columns:
+          - name: order_id
+            data_tests:
+              - not_null
+
+
+          - name: review_id
+            data_tests:
+              - not_null
+
+
+      - name: products
+        identifier: olist_products
+        columns:
+          - name: product_id
+            data_tests:
+              - unique
+              - not_null
+
+
+      - name: sellers
+        identifier: olist_sellers
+        columns:
+          - name: seller_id
+            data_tests:
+              - unique
+              - not_null
+
+
+      - name: product_category_name_translation
+        columns:
+          - name: product_category_name
+            data_tests:
+              - unique
+              - not_null
