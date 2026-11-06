@@ -1,0 +1,48 @@
+models:
+  - name: stg_olist__orders
+    description: "One row per order. Standardizes raw Olist order data"
+    columns:
+      - name: order_id
+        description: "Unique identifier per order"
+        data_tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: "order-specific customer identifier"
+        data_tests:
+          - unique
+          - not_null
+
+      - name: order_status
+        description: "The status of one order"
+        data_tests:
+          - accepted_values:
+              arguments:
+                values:
+                  - shipped
+                  - unavailable
+                  - invoiced
+                  - created
+                  - approved
+                  - processing
+                  - delivered
+                  - canceled
+
+      - name: purchased_at
+        description: "Timestamp when the customer placed the order"
+        data_tests:
+          - not_null
+
+      - name: payment_approved_at
+        description: "Timestamp when the order's payment was approved"
+
+      - name: delivered_to_carrier_at
+        description: "Timestamp when the order was handed over to the carrier"
+
+      - name: delivered_to_customer_at
+        description: "Timestamp when the order was delivered to the customer"
+
+      - name: estimated_delivery_date
+        description: "Estimated calendar date of customer delivery"
+        data_tests:
+          - not_null
