@@ -46,3 +46,32 @@ models:
         description: "Estimated calendar date of customer delivery"
         data_tests:
           - not_null
+
+  - name: stg_olist__customers
+    description: "One row per order-specific customer record. Standardizes the postal-code prefix as five-digit text, restoring leading zeros lost during raw ingestion"
+    columns:
+
+      - name: customer_unique_id
+        description: "Stable customer identifier that can appear across multiple orders"
+        data_tests:
+          - not_null
+
+      - name: customer_zip_code_prefix
+        description: "Five-digit postal-code prefix associated with the customer's address. Stored as text to preserve leading zeros"
+        data_tests:
+          - not_null
+      - name: customer_id
+        description: "Order-specific customer identifier"
+        data_tests:
+          - unique
+          - not_null
+
+      - name: customer_city
+        description: "City associated with the customer's address"
+        data_tests:
+          - not_null
+
+      - name: customer_state
+        description: "Brazilian state code associated with the customer's address"
+        data_tests:
+          - not_null
