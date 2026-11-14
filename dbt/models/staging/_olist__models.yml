@@ -60,6 +60,7 @@ models:
         description: "Five-digit postal-code prefix associated with the customer's address. Stored as text to preserve leading zeros"
         data_tests:
           - not_null
+
       - name: customer_id
         description: "Order-specific customer identifier"
         data_tests:
@@ -73,5 +74,29 @@ models:
 
       - name: customer_state
         description: "Brazilian state code associated with the customer's address"
+        data_tests:
+          - not_null
+
+  - name: stg_olist__sellers
+    description: "One row per seller. Standardizes the postal-code prefix as five-digit text, restoring leading zeros lost during raw ingestion"
+    columns:
+      - name: seller_id
+        description: "Unique identifier assigned to each seller."
+        data_tests:
+          - unique
+          - not_null
+
+      - name: seller_zip_code_prefix
+        description: "Five-digit postal-code prefix associated with the seller. Stored as text to preserve leading zeros"
+        data_tests:
+          - not_null
+
+      - name: seller_city
+        description: "City associated with the seller"
+        data_tests:
+          - not_null
+
+      - name: seller_state
+        description: "Brazilian state code associated with the seller's address"
         data_tests:
           - not_null
