@@ -50,7 +50,6 @@ models:
   - name: stg_olist__customers
     description: "One row per order-specific customer record. Standardizes the postal-code prefix as five-digit text, restoring leading zeros lost during raw ingestion"
     columns:
-
       - name: customer_unique_id
         description: "Stable customer identifier that can appear across multiple orders"
         data_tests:
@@ -98,5 +97,49 @@ models:
 
       - name: seller_state
         description: "Brazilian state code associated with the seller's address"
+        data_tests:
+          - not_null
+
+  - name: stg_olist__order_items
+    description: "One row per item entry into an order."
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            columns:
+              - order_id
+              - order_item_id
+    columns:
+      - name: order_id
+        description: "Identifier of the order containing this item. Can repeat because an order may contain multiple items."
+        data_tests:
+          - not_null
+
+      - name: order_item_id
+        description: "item's sequence identifier within an order"
+        data_tests:
+          - not_null
+
+      - name: product_id
+        description: "Describes a product within an order, but it can be seen in many different orders"
+        data_tests:
+          - not_null
+
+      - name: seller_id
+        description: "Describes a seller within an order, but it can be seen in many different orders"
+        data_tests:
+          - not_null
+
+      - name: shipping_limit_date
+        description: "Represents the seller's deadline for handing the item over to the logistics partner"
+        data_tests:
+          - not_null
+
+      - name: price
+        description: "Price of the order item, excluding shipping costs."
+        data_tests:
+          - not_null
+
+      - name: freight_value
+        description: "Shipping cost allocated to the order item."
         data_tests:
           - not_null
