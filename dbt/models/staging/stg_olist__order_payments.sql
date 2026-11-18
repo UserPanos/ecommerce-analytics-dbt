@@ -1,0 +1,7 @@
+select
+    order_id,
+    payment_sequential,
+    payment_type,
+    payment_installments,
+    payment_value::decimal(12,2) as payment_value
+from {{ source ( 'olist' , 'order_payments' )}}
