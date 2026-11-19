@@ -267,3 +267,32 @@ models:
         description: "English translation of the Portuguese product category name"
         data_tests:
           - not_null
+
+  - name: stg_olist__geolocation
+    description: "One row per geolocation observation, preserving repeated ZIP prefixes and imported coordinate values"
+    columns:
+
+      - name: geolocation_zip_code_prefix
+        description: "Five-digit ZIP code prefix standardized as text with leading zeros preserved"
+        data_tests:
+          - not_null
+
+      - name: geolocation_lat
+        description: "Latitude of the geolocation observation, retaining imported float4 precision"
+        data_tests:
+          - not_null
+
+      - name: geolocation_lng
+        description: "Longitude of the geolocation observation, retaining imported float4 precision"
+        data_tests:
+          - not_null
+
+      - name: geolocation_city
+        description: "City associated with the geolocation observation"
+        data_tests:
+          - not_null
+
+      - name: geolocation_state
+        description: "State associated with the geolocation observation"
+        data_tests:
+          - not_null
