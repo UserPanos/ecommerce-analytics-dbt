@@ -212,3 +212,43 @@ models:
 
       - name: product_width_cm
         description: "Product width in centimeters"
+
+  - name: stg_olist__order_reviews
+    description: "One row per review and order combination, preserving review scores, optional comments and timestamps"
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            columns:
+              - review_id
+              - order_id
+    columns:
+
+      - name: review_id
+        description: "Identifier of the review"
+        data_tests:
+          - not_null
+
+      - name: order_id
+        description: "Identifier of the associated order"
+        data_tests:
+          - not_null
+
+      - name: review_score
+        description: "Customer review score from 1 to 5"
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4, 5]
+
+      - name: review_comment_title
+        description: "Optional review title, with blank or whitespace-only values converted to sql null"
+
+      - name: review_comment_message
+        description: "Optional review comment, with blank or whitespace-only values converted to sql null"
+
+      - name: review_created_at
+        description: "Timestamp recorded for review creation"
+
+      - name: review_answered_at
+        description: "Timestamp recorded for the review answer"
