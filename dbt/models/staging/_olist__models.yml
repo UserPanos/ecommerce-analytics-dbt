@@ -178,3 +178,37 @@ models:
         description: "Monetary amount associated with this payment entry."
         data_tests:
           - not_null
+
+  - name: stg_olist__products
+    description: "One row per product. Converts blank or whitespace-only category names to SQL NULL and preserves other nullable product attributes."
+    columns:
+
+      - name: product_id
+        description: "Unique identifier for each product"
+        data_tests:
+          - unique
+          - not_null
+
+      - name: product_category_name
+        description: "Category assigned to the product. Empty and whitespace-only source values are converted to SQL NULL"
+
+      - name: product_name_length
+        description: "Length of the product name in characters"
+
+      - name: product_description_length
+        description: "Length of the product description in characters"
+
+      - name: product_photos_quantity
+        description: "Number of photos associated with the product"
+
+      - name: product_weight_g
+        description: "Product weight in grams"
+
+      - name: product_length_cm
+        description: "Product length in centimeters"
+
+      - name: product_height_cm
+        description: "Product height in centimeters"
+
+      - name: product_width_cm
+        description: "Product width in centimeters"
