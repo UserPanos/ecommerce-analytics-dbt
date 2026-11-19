@@ -252,3 +252,18 @@ models:
 
       - name: review_answered_at
         description: "Timestamp recorded for the review answer"
+
+  - name: stg_olist__product_category_translations
+    description: "One row per Portuguese product category with its English translation"
+    columns:
+
+      - name: product_category_name
+        description: "Portuguese product category name used as the translation lookup key"
+        data_tests:
+          - unique
+          - not_null
+
+      - name: product_category_name_english
+        description: "English translation of the Portuguese product category name"
+        data_tests:
+          - not_null
