@@ -12,6 +12,10 @@ models:
         data_tests:
           - unique
           - not_null
+          - relationships:
+              arguments:
+                to: "{{ref ('stg_olist__customers')}}"
+                field: customer_id
 
       - name: order_status
         description: "The status of one order"
@@ -113,6 +117,10 @@ models:
         description: "Identifier of the order containing this item. Can repeat because an order may contain multiple items"
         data_tests:
           - not_null
+          - relationships:
+             arguments:
+              to: "{{ref ('stg_olist__orders')}}"
+              field: order_id
 
       - name: order_item_id
         description: "item's sequence identifier within an order"
@@ -123,11 +131,19 @@ models:
         description: "Describes a product within an order, but it can be seen in many different orders"
         data_tests:
           - not_null
+          - relationships:
+              arguments:
+                to: "{{ ref ('stg_olist__products') }}"
+                field: product_id
 
       - name: seller_id
         description: "Describes a seller within an order, but it can be seen in many different orders"
         data_tests:
           - not_null
+          - relationships:
+              arguments:
+               to: "{{ref ('stg_olist__sellers') }}"
+               field: seller_id
 
       - name: shipping_limit_date
         description: "Represents the seller's deadline for handing the item over to the logistics partner"
@@ -158,6 +174,10 @@ models:
         description: "Identifier of the order associated with this payment"
         data_tests:
           - not_null
+          - relationships:
+              arguments:
+                to: "{{ref ('stg_olist__orders')}}"
+                field: order_id
 
       - name: payment_sequential
         description: "Sequence number identifying a payment entry within an order"
@@ -232,6 +252,10 @@ models:
         description: "Identifier of the associated order"
         data_tests:
           - not_null
+          - relationships:
+              arguments:
+                to: "{{ref ('stg_olist__orders')}}"
+                field: order_id
 
       - name: review_score
         description: "Customer review score from 1 to 5"
