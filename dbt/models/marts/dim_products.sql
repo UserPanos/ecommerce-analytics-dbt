@@ -1,3 +1,9 @@
+{{
+    config(
+        materialized = 'table',
+        post_hook = "alter table {{ this }} add primary key (product_id) "
+    )
+}}
 select
     p.product_id,
     p.product_category_name,
